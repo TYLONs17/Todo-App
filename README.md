@@ -55,8 +55,8 @@ Join our community of developers creating universal apps.
 ![vid](./assets/screenshots/01first_commit.mp4)
 
 # Site day ??. well its been over 2 weeks
-![Hero](./assets/screenshots/"Screenshot_2024-07-12_Hero.png")
-![CreateAccountScreen](./assets/screenshots/"Screenshot_2024-07-12_CreateAccountScreen.png")
+![Hero](./assets/screenshots/Screenshot_2024-07-12_Hero.png)
+![CreateAccountScreen](./assets/screenshots/Screenshot_2024-07-12_CreateAccountScreen.png)
 ![LoginScreen](./assets/screenshots/Screenshot_2024-07-12_LoginScreen.png)
 ![Explore](./assets/screenshots/Screenshot_2024-07-12_explore.png)
 ![Calendar](./assets/screenshots/Screenshot_2024-07-12_calendar.png)

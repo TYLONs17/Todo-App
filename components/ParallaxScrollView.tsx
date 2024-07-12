@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedView } from '@/components/ThemedView';
+import TopNav from './TopNav';
 
 const HEADER_HEIGHT = 250;
 

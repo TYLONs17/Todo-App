@@ -1,100 +1,205 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, FlatList } from 'react-native';
+import { Calendar } from 'react-native-calendars';
+import LottieView from 'lottie-react-native';
+import { VictoryChart, VictoryLine, VictoryAxis } from 'victory-native';
 
 import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { useThemeContext } from '@/contexts/ThemeContext';
+import { Colors } from '@/constants/Colors';
 
-import { Calendar } from 'react-native-calendars';
+// Mock data for task statistics and tasks
+const taskStatistics = [5, 4, 6, 3, 5, 2, 4]; // Number of tasks completed each day for the last 7 days
+const upcomingTasks = [
+  { id: '1', title: 'Task 1', dueDate: '2023-07-10', category: 'Work' },
+  { id: '2', title: 'Task 2', dueDate: '2023-07-11', category: 'Personal' },
+  
+];
+const pendingTasks = [
+  { id: '1', title: 'Pending Task 1', category: 'Work' },
+  { id: '2', title: 'Pending Task 2', category: 'Personal' },
+  
+];
 
-export default function calendar() {
+export default function CalendarScreen() {
+  const { theme } = useThemeContext();
+  const [selectedDate, setSelectedDate] = useState('2023-07-01');
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#FFA07A', dark: '#FF6347' }}
-      headerImage={<Ionicons size={310} name="calendar" style={styles.headerImage} />}>
+      headerImage={<LottieView source={require('@/assets/images/time_shell.json')} style={styles.headerImage} autoPlay loop />}
+    >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Calendar</ThemedText>
       </ThemedView>
-      <ThemedText>Manage your schedule and tasks efficiently.</ThemedText> 
-      <Collapsible title="Event Management">
-        <ThemedText>
-          Easily add, edit, and delete events. Sync with external calendars for a comprehensive view.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Reminders">
-        <ThemedText>
-          Set reminders for your events so you never miss an important task or meeting.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Day, Week, and Month Views">
-        <ThemedText>
-          Switch between different calendar views to get a better overview of your schedule.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Sharing and Collaboration">
-        <ThemedText>
-          Share your calendar with others and collaborate on planning events and meetings.
-        </ThemedText>
-      </Collapsible>
-
+      <ThemedText style={styles.subtitle}>Manage your schedule and tasks efficiently.</ThemedText>
+      
       <Calendar
-        // Initial date to be shown in the calendar
-        current={'2023-04-01'}
-        // Handler for when a date is pressed
-        onDayPress={(day) => {
-            console.log('selected day', day);
-        }}
-        // Month format in calendar title
+        current={selectedDate}
+        onDayPress={(day: { dateString: React.SetStateAction<string>; }) => setSelectedDate(day.dateString)}
         monthFormat={'yyyy MM'}
-        // Handler for when the month changes in calendar
-        onMonthChange={(month) => {
-            console.log('month changed', month);
-        }}
-        // Hide month navigation arrows
+        onMonthChange={(month: any) => console.log('month changed', month)}
         hideArrows={true}
-        // Replace default arrows with custom ones (direction can be 'left' or 'right')
-        // renderArrow={(direction) => (<Arrow />)}
-        // Do not show users other months
         hideExtraDays={true}
-        // Disable days before today
         disablePastDays={true}
-        // Mark today with a custom color
-        markedDates={{
-            '2023-04-16': {selected: true, marked: true, selectedColor: 'blue'},
-        }}
-        // Show week numbers to the left
+        markedDates={{ [selectedDate]: { selected: true, marked: true, selectedColor: '#FFA07A' } }}
         showWeekNumbers={true}
-        // Handler for when the visible month changes in calendar
-        onVisibleMonthsChange={(months) => {
-            console.log('now these months are visible', months);
-        }}
-        // Hide day names
+        onVisibleMonthsChange={(months: any) => console.log('now these months are visible', months)}
         hideDayNames={true}
-        // Show the calendar as a horizontal strip
         horizontal={true}
-        // Enable paging on horizontal, default = false
         pagingEnabled={true}
-        // Set custom calendarWidth.
         calendarWidth={320}
+        theme={{
+          calendarBackground: Colors[theme ?? 'light'].background,
+          textSectionTitleColor: Colors[theme ?? 'light'].text,
+          selectedDayBackgroundColor: Colors[theme ?? 'light'].tint,
+          selectedDayTextColor: Colors[theme ?? 'light'].background,
+          dayTextColor: Colors[theme ?? 'light'].text,
+          todayTextColor: Colors[theme ?? 'light'].tint,
+          arrowColor: Colors[theme ?? 'light'].icon,
+          monthTextColor: Colors[theme ?? 'light'].text,
+          indicatorColor: Colors[theme ?? 'light'].tint,
+        }}
+      />
+
+      <ThemedView style={styles.taskOverviewContainer}>
+        {/* First Row: Completed and Pending Tasks */}
+        <ThemedView style={styles.rowContainer}>
+          <ThemedView style={styles.statContainer}>
+            <ThemedText style={styles.statTitle}>Completed Tasks</ThemedText>
+            <ThemedText style={styles.statValue}>{taskStatistics.reduce((a, b) => a + b, 0)}</ThemedText>
+          </ThemedView>
+          <ThemedView style={styles.statContainer}>
+            <ThemedText style={styles.statTitle}>Pending Tasks</ThemedText>
+            <ThemedText style={styles.statValue}>{pendingTasks.length}</ThemedText>
+          </ThemedView>
+        </ThemedView>
+
+        <LottieView source={require('@/assets/images/time_management.json')} style={styles.footerImage} autoPlay loop />
+
+        {/* Second Row: Task Completion Chart */}
+        <ThemedView style={styles.chartContainer}>
+          <ThemedText style={styles.chartTitle}>Daily Task Completion (Last 7 Days)</ThemedText>
+          <VictoryChart>
+            <VictoryAxis />
+            <VictoryLine data={taskStatistics} />
+          </VictoryChart>
+        </ThemedView>
+
+        
+      </ThemedView>
+
+      {/* Third Row: Upcoming Tasks */}
+      <ThemedText style={styles.sectionTitle}>Upcoming Tasks (Next 7 Days)</ThemedText>
+        <FlatList
+          data={upcomingTasks}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <ThemedView style={styles.taskItem}>
+              <ThemedText style={styles.taskTitle}>{item.title}</ThemedText>
+              <ThemedText style={styles.taskDate}>{item.dueDate}</ThemedText>
+              <ThemedText style={styles.taskCategory}>{item.category}</ThemedText>
+            </ThemedView>
+          )}
         />
 
+        {/* Fourth Row: Pending Tasks by Category */}
+        <ThemedText style={styles.sectionTitle}>Pending Tasks by Category</ThemedText>
+        <FlatList
+          data={pendingTasks}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <ThemedView style={styles.taskItem}>
+              <ThemedText style={styles.taskTitle}>{item.title}</ThemedText>
+              <ThemedText style={styles.taskCategory}>{item.category}</ThemedText>
+            </ThemedView>
+          )}
+        />
+
+      
     </ParallaxScrollView>
   );
 }
 
-
-
 const styles = StyleSheet.create({
-    headerImage: {
-      color: '#FF4500',
-      bottom: -90,
-      left: -35,
-      position: 'absolute',
-    },
-    titleContainer: {
-      flexDirection: 'row',
-      gap: 8,
-    },
-  });
+  headerImage: {
+    width: 400,
+    height: 400,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    padding: 16,
+  },
+  subtitle: {
+    padding: 16,
+  },
+  taskOverviewContainer: {
+    padding: 16,
+    marginTop: 30,
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  statContainer: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 8,
+    borderWidth: 1,
+    borderColor: '#FFA07A',
+    borderRadius: 8,
+    marginHorizontal: 4,
+  },
+  statTitle: {
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  statValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  chartContainer: {
+    alignItems: 'center',
+    marginVertical: 16,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#FFA07A',
+    borderRadius: 8,
+  },
+  chartTitle: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 8,
+  },
+  taskItem: {
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#FFA07A',
+    borderRadius: 8,
+  },
+  taskTitle: {
+    fontSize: 16,
+  },
+  taskDate: {
+    fontSize: 14,
+    color: '#555',
+  },
+  taskCategory: {
+    fontSize: 14,
+    color: '#888',
+  },
+  footerImage: {
+    width: 300,
+    height: 300,
+  },
+});

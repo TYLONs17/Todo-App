@@ -52,4 +52,14 @@ Join our community of developers creating universal apps.
 
 ## Site day 1 Screenshot n vid
 ![Home](./assets/screenshots/01home.png)
-![vid](./assets/screenshots/01first%20commit.mp4)
+![vid](./assets/screenshots/01first_commit.mp4)
+
+# Site day ??. well its been over 2 weeks
+![Hero](./assets/screenshots/Screenshot 2024-07-12 Hero.png)
+![CreateAccountScreen](./assets/screenshots/Screenshot 2024-07-12 CreateAccountScreen.png)
+![LoginScreen](./assets/screenshots/Screenshot 2024-07-12 LoginScreen.png)
+![Explore](./assets/screenshots/Screenshot 2024-07-12 explore.png)
+![Calendar](./assets/screenshots/Screenshot 2024-07-12 calendar.png)
+![Profile](./assets/screenshots/Screenshot 2024-07-12 profile.png)
+![options](./assets/screenshots/Screenshot 2024-07-12 options.png)
+![taskInput](./assets/screenshots/Screenshot 2024-07-12 taskInput.png)

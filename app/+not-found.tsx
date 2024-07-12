@@ -4,13 +4,15 @@ import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-export default function NotFoundScreen() {
+import { NavigationProp } from '@react-navigation/native';
+
+export default function NotFoundScreen({ navigation }: { navigation: NavigationProp<any> }) {
   return (
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
       <ThemedView style={styles.container}>
         <ThemedText type="title">This screen doesn't exist.</ThemedText>
-        <Link href="/" style={styles.link}>
+        <Link href="/(tabs)/create" style={styles.link} onPress={() => navigation.goBack()} >
           <ThemedText type="link">Go to home screen!</ThemedText>
         </Link>
       </ThemedView>

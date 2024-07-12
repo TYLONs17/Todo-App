@@ -62,4 +62,4 @@ Join our community of developers creating universal apps.
 ![Calendar](./assets/screenshots/Screenshot_2024-07-12_calendar.png)
 ![Profile](./assets/screenshots/Screenshot_2024-07-12 profile.png)
 ![options](./assets/screenshots/Screenshot_2024-07-12_options.png)
-![taskInput](./assets/screenshots/Screenshot_2024-07-12_taskInput.png)
+![taskInput](./assets/screenshots/Screenshot_2024-07-12_TaskInput.png)
